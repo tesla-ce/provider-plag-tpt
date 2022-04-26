@@ -8,7 +8,7 @@
   "description": "TeSLA Plagiarism instrument provider",
   "has_service": false,
   "service_port": null,
-  "queue": "pt_turkund",
+  "queue": "pt_tpt",
   "allow_validation": true,
   "alert_below": 0.3,
   "warning_below": 0.6,
