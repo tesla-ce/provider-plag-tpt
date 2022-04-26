@@ -1,0 +1,41 @@
+version: '3.5'
+services:
+  tpt_provider:
+    image: teslace/provider-pt-tpt:edge
+    healthcheck:
+      test: /venv/bin/celery -A tesla_ce_provider inspect ping || exit 1
+      interval: 60s
+      timeout: 60s
+      retries: 3
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+    environment:
+      ROLE_ID_FILE: "/run/secrets/ROLE_ID"
+      SECRET_ID_FILE: "/run/secrets/SECRET_ID"
+      TPT_SECRET_FILE: "/run/secrets/TPT_SECRET"
+      API_URL: https://demo.tesla-project.eu
+      VERIFY_SSL: 0
+      SENTRY_ENABLED: 1
+      SENTRY_DSN: https://4bd3a90ef4e443dba70e7fa41aa5cfd6@sentry.sunai.uoc.edu/11
+      LOG_TASK_TRACE: 1
+    secrets:
+      - source: TPT_ROLE_ID
+        target: ROLE_ID
+      - source: TPT_SECRET_ID
+        target: SECRET_ID
+      - source: TPT_SECRET
+        target: SECRET
+secrets:
+  TPT_ROLE_ID:
+    file: ./secrets/TPT_ROLE_ID
+  TPT_SECRET_ID:
+    file: ./secrets/TPT_SECRET_ID
+  TPT_SECRET:
+    file: ./secrets/TPT_SECRET
+networks:
+  tesla_public:
+    external: true
+  tesla_private:
+    external: true
