@@ -62,7 +62,6 @@ def mock_tpt_lib_all_ok(mocker, tpt_provider):
     :param urkund_provider:
     :return:
     """
-    return
     mock_module = {
         'status_code': '0',
         'request_id': '3',
