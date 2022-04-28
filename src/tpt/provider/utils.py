@@ -250,3 +250,8 @@ def check_sample_file(sample, max_recursive_level, accepted_mimetypes=None):
         'mimetype': mimetype,
         'tree_file': tree_files
     }
+
+
+def construct_sample(file):
+    # format: filename:<file>,data:<mime_type>;base64,<data64>
+    return "filename:{}:data:{};base64,{}".format(file['filename'], file['mimetype'], base64.b64encode(file['content']).decode('utf-8', 'ignore'))

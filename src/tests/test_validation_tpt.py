@@ -16,82 +16,69 @@
 from .utils import get_request
 
 
-def test_send_zip_filename(mock_urkund_lib_all_ok, urkund_provider):
+def test_send_zip_filename(mock_tpt_lib_all_ok, tpt_provider):
     '''
     Test send zip filename
-    :param mock_urkund_lib_all_ok:
-    :param urkund_provider:
+    :param mock_tpt_lib_all_ok:
+    :param tpt_provider:
     :return:
     '''
     filename = 'valid/lorem.txt.zip'
     sample = get_request(filename=filename, mimetype='application/zip')
 
     model = {}
-    response = urkund_provider.verify(sample, model)
+    response = tpt_provider.verify(sample, model)
 
     from tesla_provider import result
     assert isinstance(response, result.VerificationDelayedResult)
 
 
-def test_send_zip_filename(mock_urkund_lib_all_ok, urkund_provider):
+def test_send_zip_filename(mock_tpt_lib_all_ok, tpt_provider):
     '''
     Test send zip filename
-    :param mock_urkund_lib_all_ok:
-    :param urkund_provider:
+    :param mock_tpt_lib_all_ok:
+    :param tpt_provider:
     :return:
     '''
     filename = 'valid/lorem.txt.zip'
     sample = get_request(filename=filename, mimetype='application/zip')
 
     model = {}
-    response = urkund_provider.verify(sample, model)
+    response = tpt_provider.verify(sample, model)
 
     from tesla_ce_provider import result
     assert isinstance(response, result.VerificationDelayedResult)
 
 
-def test_send_txt_filename(mock_urkund_lib_all_ok, urkund_provider):
+def test_send_txt_filename(mock_tpt_lib_all_ok, tpt_provider):
     '''
     Test send TXT filename
-    :param mock_urkund_lib_all_ok:
-    :param urkund_provider:
+    :param mock_tpt_lib_all_ok:
+    :param tpt_provider:
     :return:
     '''
     filename = 'valid/lorem.txt'
     sample = get_request(filename=filename, mimetype='text/plain')
 
     model = {}
-    response = urkund_provider.verify(sample, model)
+    response = tpt_provider.verify(sample, model)
 
     from tesla_ce_provider import result
     assert isinstance(response, result.VerificationDelayedResult)
 
 
-def test_verify_txt_filename(mock_urkund_lib_all_ok, urkund_provider):
+def test_notification_txt_filename(mock_tpt_lib_all_ok, tpt_provider):
     '''
     Test verify txt filename
-    :param mock_urkund_lib_all_ok:
-    :param urkund_provider:
+    :param mock_tpt_lib_all_ok:
+    :param tpt_provider:
     :return:
     '''
-    key = 'tukrund_check_data'
-    info = {
-        'request_id': '',
-        'learner_id': '',
-        'external_ids': [{
-            'external_id': '1610712121.915711_0',
-            'analysis_email': 'rmunozber.uoc@analysis.urkund.com',
-            'filename': 'lorem.txt'
-        }],
-        'processed_external_ids': {
-            'errors': [],
-            'corrects': []
-        },
-        'errors': [],
-        'countdown': 5,
-        'total_files': 1
-    }
+    key = 'tpt_check_data'
+    info = {}
 
-    result = urkund_provider.on_notification(key, info)
-
-    assert result is None
+    try:
+        result = tpt_provider.on_notification(key, info)
+        assert False
+    except NotImplementedError:
+        assert True

@@ -12,7 +12,8 @@
 #
 #      You should have received a copy of the GNU Affero General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
-""" TeSLA CE TPT package """
-from .provider import TPTProvider
+""" BaseTPTLibException module """
 
-__all__ = ["TPTProvider"]
+
+class BaseTPTLibException(Exception):
+    """ BaseTPTLibException class"""

@@ -18,6 +18,8 @@ import uuid
 
 from tesla_ce_provider import BaseProvider, result, message
 from tesla_ce_provider.provider.audit.tp import PlagiarismAudit
+from ..tpt_lib import TPTLib
+from ..tpt_lib.exceptions import RequestFailed, Timeout
 from . import utils
 
 
@@ -72,6 +74,20 @@ class TPTProvider(BaseProvider):
                 if permitted_option in options:
                     self.config[permitted_option] = options[permitted_option]
 
+    _tpt_lib = None
+
+    def _get_tpt_lib(self):
+        """
+        Return UrkundLib instance
+        :return:
+        """
+        if self._tpt_lib is None:
+            if self.config['domain'] is None:
+                self.config['domain'] = os.getenv('TPT_URL')
+            self._tpt_lib = TPTLib(api_url=self.config['domain'], secret=self.credentials['SECRET'].strip())
+
+        return self._tpt_lib
+
     def verify(self, request, model):
         """
             Verify a learner request
@@ -124,19 +140,21 @@ class TPTProvider(BaseProvider):
                     data = {
                         "activity": {
                             "vle_id": "1",
-                            "activity_type": "assign",
-                            "activity_id": "1"
+                            "activity_type": request.activity_id,
+                            "activity_id": request.activity_id
                         },
-                        "sample_data": get_sample('2.txt', 'plain/text'),
+                        "sample_data": utils.construct_sample(file),
                         "learner_id": request.learner_id,
                         "evaluation_id": external_id
                     }
-                    response = requests.post('{}/api/v1/evaluation/new/'.format(base_url), json=data)
+                    response = self._get_tpt_lib().verify_request(data=data)
+
                     # good response
                     # {"request_id":1,"status_code":"0"}
 
                     if int(response['status_code']) == 0:
                         aux = {
+                            "tpt_external_id": int(response['request_id']),
                             "external_id": external_id,
                             "filename": t_file['filename']
                         }
@@ -151,6 +169,14 @@ class TPTProvider(BaseProvider):
                         info['processed_external_ids']['errors'].append(aux)
 
                     idx += 1
+                except RequestFailed as err:
+                    aux = {
+                        "code": message.provider.Provider.PROVIDER_INVALID_SAMPLE_DATA.value,
+                        "filename": t_file['filename'],
+                        "tpt_code": str(err)
+                    }
+
+                    info['processed_external_ids']['errors'].append(aux)
                 except Timeout:
                     self.config['timeout_retries'] += 1
                     if self.config['timeout_retries'] >= self.config['max_timeout_retries']:
@@ -167,6 +193,8 @@ class TPTProvider(BaseProvider):
         if len(info['external_ids']) == 0:
             return result.VerificationResult(False, message_code=message.provider.Provider.PROVIDER_INVALID_SAMPLE_DATA.value)
         elif len(info['processed_external_ids']['errors']) > 0 and len(info['external_ids']) > 0:
-            return result.VerificationResult(True, message_code=message_code=message.provider.Provider.PROVIDER_INVALID_PARTIAL_SAMPLE_DATA.value)
+            return result.VerificationDelayedResult(learner_id=request.learner_id, request_id=request.request_id,
+                                                    result=result.VerificationResult(True, message_code=message.provider.Provider.PROVIDER_INVALID_PARTIAL_SAMPLE_DATA.value))
 
-        return result.VerificationResult(True)
+        return result.VerificationDelayedResult(learner_id=request.learner_id, request_id=request.request_id,
+                                                result=result.VerificationResult(True))

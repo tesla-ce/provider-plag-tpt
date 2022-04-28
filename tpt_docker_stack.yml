@@ -15,6 +15,7 @@ services:
       ROLE_ID_FILE: "/run/secrets/ROLE_ID"
       SECRET_ID_FILE: "/run/secrets/SECRET_ID"
       TPT_SECRET_FILE: "/run/secrets/TPT_SECRET"
+      TPT_URL: http://localhost:8081
       API_URL: https://demo.tesla-project.eu
       VERIFY_SSL: 0
       SENTRY_ENABLED: 1

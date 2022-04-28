@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "url": "https://github.com/tesla-ce/provider-pt-tpt",
   "image": "teslace/provider-pt-tpt:edge",
-  "name": "TeSLA Urkund Plagiarism Tool",
+  "name": "TeSLA Plagiarism Tool",
   "description": "TeSLA Plagiarism instrument provider",
   "has_service": false,
   "service_port": null,
