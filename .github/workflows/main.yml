@@ -18,7 +18,7 @@ jobs:
       - name: Get version values
         id: vars
         run: |          
-          echo ::set-output name=version::$(cat src/urkund/data/VERSION)
+          echo ::set-output name=version::$(cat src/tpt/data/VERSION)
           echo ::set-output name=tag::${GITHUB_REF#refs/*/}                
       - name: Show captured versions
         run: |
