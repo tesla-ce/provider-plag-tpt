@@ -112,7 +112,7 @@ def get_sample_tree_files(sample_data, context, mimetype, filename, level, max_r
                 "filename": context.get('type')+'.txt',
                 "mimetype": 'text/plain',
                 "status": "ACCEPTED",
-                "content": content_raw_text
+                "content": content_raw_text.encode('utf-8')
             })
 
         # check if sample has attachments
