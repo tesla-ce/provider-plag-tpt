@@ -4,10 +4,5 @@ This enviroment variables must be defined:
 
 | Variable | Default value |
 |---|---|
-| URKUND_USER  | None |
-| URKUND_PASSWORD  | None |
-| URKUND_ORGANIZATION  | None |
-| URKUND_SUBORGANIZATION  | None |
-| URKUND_UNIT  | None |
-| URKUND_DEFAULT_EMAIL_RECEIVER  | None |
-
+| TPT_SECRET_FILE  | "/run/secrets/TPT_SECRET" |
+| TPT_URL  | http://localhost:8081 |
