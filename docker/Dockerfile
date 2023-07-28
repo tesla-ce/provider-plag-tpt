@@ -65,7 +65,7 @@ RUN chmod +x /venv/bin/check_health.sh
 
 USER celery
 
-CMD ["/venv/bin/celery", "-A", "tesla_ce_provider", "worker", "-l", "warning", "-P", "gevent", "-O", "fair"]
+CMD ["/venv/bin/celery", "-A", "tesla_ce_provider", "worker", "-l", "warning", "-O", "fair"]
 
 HEALTHCHECK --start-period=15s --retries=3 CMD "/venv/bin/check_health.sh"
 

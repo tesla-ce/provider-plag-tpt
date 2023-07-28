@@ -1,7 +1,7 @@
 {
   "instrument": 5,
   "acronym": "tpt",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "url": "https://github.com/tesla-ce/provider-pt-tpt",
   "image": "teslace/provider-pt-tpt:edge",
   "name": "TeSLA Plagiarism Tool",
