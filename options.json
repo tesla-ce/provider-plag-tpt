@@ -3,7 +3,7 @@
   "acronym": "tpt",
   "version": "0.0.5",
   "url": "https://github.com/tesla-ce/provider-pt-tpt",
-  "image": "teslace/provider-pt-tpt:edge",
+  "image": "teslace/provider-pt-tpt:latest",
   "name": "TeSLA Plagiarism Tool",
   "description": "TeSLA Plagiarism instrument provider",
   "has_service": false,
